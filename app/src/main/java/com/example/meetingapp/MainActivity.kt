@@ -3,11 +3,18 @@ package com.example.meetingapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.example.meetingapp.auth.IntroActivity
+import com.example.meetingapp.auth.UserDataModel
 import com.example.meetingapp.slider.CardStackAdapter
+import com.example.meetingapp.utils.FirebaseRef
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager
 import com.yuyakaido.android.cardstackview.CardStackListener
@@ -16,6 +23,8 @@ import com.yuyakaido.android.cardstackview.Direction
 
 class MainActivity : AppCompatActivity() {
 
+    private var TAG = "MainActivity"
+    private val usersDataList = mutableListOf<UserDataModel>()
     lateinit var  cardStackAdapter: CardStackAdapter
     lateinit var manager : CardStackLayoutManager
 
@@ -23,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val setting = findViewById<ImageView>(R.id.settingIcon)
-
+        getUserDataList()
         setting.setOnClickListener {
             val auth =Firebase.auth
             auth.signOut()
@@ -60,13 +69,33 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        val testList = mutableListOf<String>()
-        testList.add("a")
-        testList.add("b")
-        testList.add("c")
 
-        cardStackAdapter = CardStackAdapter(baseContext, testList)
+        cardStackAdapter = CardStackAdapter(baseContext, usersDataList)
         cardStackView.layoutManager = manager
         cardStackView.adapter = cardStackAdapter
+    }
+
+    private fun getUserDataList(){
+        // Read from the database
+        FirebaseRef.userInfoRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                //val value = dataSnapshot.getValue<String>()
+                //val value = dataSnapshot.toString()
+                for(dataModel in dataSnapshot.children){
+
+                    val user=dataModel.getValue(UserDataModel::class.java)
+                     usersDataList.add(user!!)
+                }
+
+                cardStackAdapter.notifyDataSetChanged()
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })
+
     }
 }
