@@ -8,7 +8,9 @@ import android.view.View
 import android.widget.ImageView
 import com.example.meetingapp.auth.IntroActivity
 import com.example.meetingapp.auth.UserDataModel
+import com.example.meetingapp.setting.SettingActivity
 import com.example.meetingapp.slider.CardStackAdapter
+import com.example.meetingapp.utils.FirebaseAuthUtils
 import com.example.meetingapp.utils.FirebaseRef
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -35,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         getUserDataList()
         setting.setOnClickListener {
             val auth =Firebase.auth
-            auth.signOut()
-            val intent = Intent(this, IntroActivity::class.java)
+           // auth.signOut()
+            val intent = Intent(this, SettingActivity::class.java)
 
             startActivity(intent)
         }
