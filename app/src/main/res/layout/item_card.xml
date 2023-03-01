@@ -13,10 +13,10 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="400dp"
         android:src="@drawable/no"
         android:id="@+id/profileImageArea"/>
-    <TextView
+     <TextView
         android:text="Name"
         android:id="@+id/itemNickname"
         android:layout_margin="5dp"

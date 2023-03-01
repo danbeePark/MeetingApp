@@ -18,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        auth = FirebaseAuth.getInstance()
         val loginBtn : Button = findViewById(R.id.loginBtn)
         loginBtn.setOnClickListener {
             var email  = findViewById<TextInputEditText>(R.id.emailArea)
