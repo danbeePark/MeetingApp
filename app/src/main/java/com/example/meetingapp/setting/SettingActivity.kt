@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import com.example.meetingapp.R
 import com.example.meetingapp.auth.IntroActivity
+import com.example.meetingapp.message.MyLikeListActivity
 import com.example.meetingapp.utils.FirebaseAuthUtils
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -23,6 +24,13 @@ class SettingActivity : AppCompatActivity() {
         myBtn.setOnClickListener {
 
             val intent = Intent(this, MypageAcitivity::class.java)
+            startActivity(intent)
+        }
+
+        val myLike = findViewById<Button>(R.id.myLikeListBtn)
+        myLike.setOnClickListener {
+
+            val intent = Intent(this, MyLikeListActivity::class.java)
             startActivity(intent)
         }
 
